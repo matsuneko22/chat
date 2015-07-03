@@ -1,22 +1,22 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ƒzƒ\ƒ~ƒ`ƒ`ƒƒƒbƒg</title>
+  <title>ãƒ›ã‚½ãƒŸãƒãƒãƒ£ãƒƒãƒˆ</title>
 </head>
 <body>
   <input type="text" id="msg_input" style="width:200px;" />
-  <button onclick="publishMessage();">Œê‚é</button>
+  <button onclick="publishMessage();">èªã‚‹</button>
   <div id="msg"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
-    // 1.ƒCƒxƒ“ƒg‚ÆƒR[ƒ‹ƒoƒbƒN‚Ì’è‹`
+    // 1.ã‚¤ãƒ™ãƒ³ãƒˆã¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®å®šç¾©
     var socketio = io.connect('http://localhost:8080');
 
     socketio.on("connected", function(name) {});
     socketio.on("publish", function (data) { addMessage(data.value); });
     socketio.on("disconnect", function () {});
 
-    // 2.ƒCƒxƒ“ƒg‚É—‚Ü‚¹‚éŠÖ”‚Ì’è‹`
+    // 2.ã‚¤ãƒ™ãƒ³ãƒˆã«çµ¡ã¾ã›ã‚‹é–¢æ•°ã®å®šç¾©
     function start(name) {
       socketio.emit("connected", name);
     }
@@ -34,10 +34,10 @@
       msgArea.appendChild(domMeg);
     }
 
-    // 3.ŠJnˆ—
+    // 3.ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½
     var msgArea = document.getElementById("msg");
-    var myName = Math.floor(Math.random()*100) + "‚³‚ñ";
-    addMessage("‹M•û‚Í" + myName + "‚Æ‚µ‚Ä“üº‚µ‚Ü‚µ‚½");
+    var myName = Math.floor(Math.random()*100) + "ã•ã‚“";
+    addMessage("è²´æ–¹ã¯" + myName + "ã¨ã—ã¦å…¥å®¤ã—ã¾ã—ãŸ");
     start(myName);
   </script>
 </body>
