@@ -9,7 +9,7 @@ var io = require("socket.io").listen(server);
 
 
 var userHash = {};
-
+var username;
 
 io.sockets.on("connection", function (socket) {
 
@@ -27,6 +27,7 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("disconnect", function () {
     if (userHash[socket.id]) {
+      // var msg = username + "さんが退出しました";
       var msg = userHash[socket.id] + "さんが退出しました";
       delete userHash[socket.id];
       io.sockets.emit("publish", {value: msg});

@@ -18,8 +18,8 @@
     socketio.on("disconnect", function () {});
 
     // 2.イベントに絡ませる関数の定義
-    function start(name) {
-      socketio.emit("connected", name);
+    function start(id) {
+      socketio.emit("connected", id);
     }
 
     function publishMessage() {
@@ -35,11 +35,12 @@
       msgArea.appendChild(domMeg);
     }
 
-    
+
     var msgArea = document.getElementById("msg");
-    var myName = Math.floor(Math.random()*100) + "さん";
+    var id = Math.floor(Math.random()*100) + "さん";
+    var myName = window.prompt("あなたの名前はを入力","")
     addMessage("貴方は" + myName + "として入室しました");
-    start(myName);
+    start(id);
   </script>
 </body>
 </html>
