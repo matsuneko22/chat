@@ -1,23 +1,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ホソミチチャット</title>
+  <title>chat unstable</title>
 </head>
 <body>
-  <input type="text" id="msg_input" style="width:200px;" />
-  <button onclick="publishMessage();">語る</button>
+  <!-- <form id="myform"> -->
+    <input type="text" id="msg_input" style="width:200px;" onchange="publishMessage();" />
+    <button onclick="publishMessage();">語る</button>
+  <!-- </form> -->
   <div id="msg"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     var location_obj = window.location;
-    // 1.イベントとコールバックの定義
     var socketio = io.connect(location_obj.href);
 
     socketio.on("connected", function(name) {});
     socketio.on("publish", function (data) { addMessage(data.value); });
     socketio.on("disconnect", function () {});
 
-    // 2.イベントに絡ませる関数の定義
     function start(id) {
       socketio.emit("connected", id);
     }

@@ -17,7 +17,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("connected", function (name) {
     var msg = name + "さんが入室しました";
     userHash[socket.id] = name;
-    io.sockets.emit("publish", {value: msg});
+    socket.broadcast.emit("publish", {value: msg});
   });
 
 
