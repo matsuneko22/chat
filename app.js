@@ -13,10 +13,15 @@ var username;
 
 io.sockets.on("connection", function (socket) {
 
-
-  socket.on("connected", function (name) {
-    var msg = name + "さんが入室しました";
-    userHash[socket.id] = name;
+  var myName = "名無し";
+  socket.on("connected", function (Name) {
+    if(Name === ""){
+      myName = "nanashi"
+    }else{
+      myName = Name;
+    }
+    var msg = myName + "さんが入室しました";
+    userHash[socket.id] = Name;
     socket.broadcast.emit("publish", {value: msg});
   });
 
@@ -27,7 +32,7 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("disconnect", function () {
     if (userHash[socket.id]) {
-      // var msg = username + "さんが退出しました";
+      var msg = myName + "さんが退出しました";
       var msg = userHash[socket.id] + "さんが退出しました";
       delete userHash[socket.id];
       io.sockets.emit("publish", {value: msg});

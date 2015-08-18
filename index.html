@@ -1,13 +1,12 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>chat unstable</title>
 </head>
 <body>
-  <!-- <form id="myform"> -->
-    <input type="text" id="msg_input" style="width:200px;" onchange="publishMessage();" />
-    <button onclick="publishMessage();">語る</button>
-  <!-- </form> -->
+  <input type="text" id="msg_input" style="width:200px;" onchange="publishMessage();" />
+  <button onclick="publishMessage();">send</button>
   <div id="msg"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
@@ -18,13 +17,13 @@
     socketio.on("publish", function (data) { addMessage(data.value); });
     socketio.on("disconnect", function () {});
 
-    function start(id) {
-      socketio.emit("connected", id);
+    function start() {
+      socketio.emit("connected", myName);
     }
 
     function publishMessage() {
       var textInput = document.getElementById('msg_input');
-      var msg = "[" + myName + "] " + textInput.value;
+      // var msg = "[" + myName + "] " + textInput.value;
       socketio.emit("publish", {value: msg});
       textInput.value = '';
     }
@@ -37,10 +36,10 @@
 
 
     var msgArea = document.getElementById("msg");
-    var id = Math.floor(Math.random()*100) + "さん";
+    //var id = Math.floor(Math.random()*100) + "さん";
     var myName = window.prompt("あなたの名前はを入力","")
     addMessage("貴方は" + myName + "として入室しました");
-    start(id);
+    start();
   </script>
 </body>
 </html>
