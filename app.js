@@ -14,12 +14,17 @@ var username;
 io.sockets.on("connection", function (socket) {
 
 
-  socket.on("connected", function (name) {
-    var msg = name + "さんが入室しました";
-    userHash[socket.id] = name;
+  socket.on("connected", function (user) {
+    var msg = user.name + "さんが入室しました";
+    userHash[socket.id] = user.name;
     io.sockets.emit("publish", {value: msg});
   });
 
+  socket.on("roomChange", function(user){
+    socket.join(user.room);
+    console.log("emit comming!")
+    socket.broadcast.to(user.room).emit('emmit_from_server', user.name + " さんが入室");
+  })
 
   socket.on("publish", function (data) {
     io.sockets.emit("publish", {value:data.value});
