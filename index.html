@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ホソミチチャット</title>
+  <title>chat unstable</title>
 </head>
 <body>
   <select id="rooms" onchange="changeroom();">
@@ -9,13 +10,12 @@
   </select>
   <button onclick="createRoom();">ルームを作る</button>
   <br />
-  <input type="text" id="msg_input" style="width:200px;" />
-  <button onclick="publishMessage();">語る</button>
+  <input type="text" id="msg_input" style="width:200px;" onchange="publishMessage();" />
+  <button onclick="publishMessage();">send</button>
   <div id="msg"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     var location_obj = window.location;
-    // 1.イベントとコールバックの定義
     var socketio = io.connect(location_obj.href);
 
     // socketio.on("connected", function(name) {});
@@ -33,6 +33,7 @@
       user.room = document.getElementById('rooms').value;
       socketio.emit("roomChange", user);
     }
+
 
     // 2.イベントに絡ませる関数の定義
     function start(user) {
@@ -63,10 +64,9 @@
 
 
     var msgArea = document.getElementById("msg");
-    var id = Math.floor(Math.random()*100) + "さん";
     var myName = window.prompt("あなたの名前はを入力","")
     addMessage("貴方は" + myName + "として入室しました");
-    start(id);
+    start();
   </script>
 </body>
 </html>

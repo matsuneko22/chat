@@ -17,7 +17,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("connected", function (user) {
     var msg = user.name + "さんが入室しました";
     userHash[socket.id] = user.name;
-    io.sockets.emit("publish", {value: msg});
+    socket.broadcast.emit("publish", {value: msg});
   });
 
   socket.on("roomChange", function(user){
@@ -32,7 +32,7 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("disconnect", function () {
     if (userHash[socket.id]) {
-      // var msg = username + "さんが退出しました";
+      var msg = myName + "さんが退出しました";
       var msg = userHash[socket.id] + "さんが退出しました";
       delete userHash[socket.id];
       io.sockets.emit("publish", {value: msg});
