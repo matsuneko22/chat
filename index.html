@@ -64,9 +64,9 @@
 
 
     var msgArea = document.getElementById("msg");
-    var myName = window.prompt("あなたの名前はを入力","")
-    addMessage("貴方は" + myName + "として入室しました");
-    start();
+    user.name = window.prompt("あなたの名前はを入力","")
+    addMessage("貴方は" + user.name + "として入室しました");
+    start(user);
   </script>
 </body>
 </html>
