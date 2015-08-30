@@ -26,7 +26,11 @@ io.sockets.on("connection", function (socket) {
   socket.on("roomChange", function(user){
     socket.join(user.room);
     console.log("emit comming!")
-    socket.broadcast.to(user.room).emit('publish', user.name + " さんが入室");
+    var data = {
+      user: user,
+      value : user.name + "さんが入室しました"
+    }
+    socket.broadcast.to(user.room).emit('publish', data);
   })
 
   socket.on("publish", function (data) {
