@@ -13,29 +13,38 @@ var username;
 
 io.sockets.on("connection", function (socket) {
 
-
+  var rooms = new Array("default");
   socket.on("connected", function (user) {
+    console.log("connected: "+ socket.id);
     var msg = user.name + "さんが入室しました";
     userHash[socket.id] = user.name;
+    socket.join("default");
+    socket.emit("push_room", rooms);
     socket.broadcast.emit("publish", {value: msg});
   });
 
   socket.on("roomChange", function(user){
     socket.join(user.room);
     console.log("emit comming!")
-    socket.broadcast.to(user.room).emit('emmit_from_server', user.name + " さんが入室");
+    socket.broadcast.to(user.room).emit('publish', user.name + " さんが入室");
   })
 
   socket.on("publish", function (data) {
-    io.sockets.emit("publish", {value:data.value});
+    io.to(data.user.room).emit('publish', data);
   });
 
   socket.on("disconnect", function () {
     if (userHash[socket.id]) {
-      var msg = myName + "さんが退出しました";
+      // var msg =  + "さんが退出しました";
       var msg = userHash[socket.id] + "さんが退出しました";
       delete userHash[socket.id];
       io.sockets.emit("publish", {value: msg});
     }
   });
+  
+  
+  socket.on("roomCreated", function(roomname){
+    rooms.push(roomname);
+    io.sockets.emit("add_room", roomname);
+  })
 });

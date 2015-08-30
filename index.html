@@ -6,7 +6,7 @@
 </head>
 <body>
   <select id="rooms" onchange="changeroom();">
-    <option value="default">default room</option>
+    <!--<option value="default">default room</option>-->
   </select>
   <button onclick="createRoom();">ルームを作る</button>
   <br />
@@ -17,10 +17,15 @@
   <script type="text/javascript">
     var location_obj = window.location;
     var socketio = io.connect(location_obj.href);
+    
+    var rooms = undefined;
 
-    // socketio.on("connected", function(name) {});
+    socketio.on("connected", user);
     socketio.on("publish", function (data) { addMessage(data.value); });
     socketio.on("disconnect", function () {});
+    socketio.on("add_room", function(roomname){
+      addRoom(roomname);
+    })
     
     var user = {
       name: undefined ,
@@ -38,16 +43,32 @@
     // 2.イベントに絡ませる関数の定義
     function start(user) {
       socketio.emit("connected", user);
+      socketio.on("push_room", function(pushedrooms){
+        console.log(pushedrooms);
+        rooms=pushedrooms;
+        console.log("rooms:"+rooms);
+        for(var p in rooms){
+          addRoom(rooms[p]);
+          console.log(rooms);
+        }
+      });
+
     }
 
     function publishMessage() {
       var textInput = document.getElementById('msg_input');
-      var msg = "[" + myName + "] " + textInput.value;
-      socketio.emit("publish", {value: msg});
+      var msg = "[" + user.name + "] " + textInput.value;
+      console.log(msg);
+      socketio.emit("publish", 
+        {
+          value: msg,
+          user: user
+          });
       textInput.value = '';
     }
 
     function addMessage (msg) {
+      console.log(msg);
       var domMeg = document.createElement('div');
       domMeg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
       msgArea.appendChild(domMeg);
@@ -55,10 +76,14 @@
     
     function createRoom(){
       var roomName = window.prompt("部屋の名前を付けてください。", "");
+      socketio.emit("roomCreated", roomName);
+    }
+    
+    function addRoom(name){
       var select = document.getElementById('rooms');
       var option = document.createElement('option');
-      option.setAttribute('value', roomName);
-      option.innerHTML = roomName;
+      option.setAttribute('value', name);
+      option.innerHTML = name;
       select.appendChild(option);
     }
 
