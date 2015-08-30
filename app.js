@@ -9,11 +9,12 @@ var io = require("socket.io").listen(server);
 
 
 var userHash = {};
-var username;
+// var username;
+var rooms = new Array("default");
 
 io.sockets.on("connection", function (socket) {
 
-  var rooms = new Array("default");
+
   socket.on("connected", function (user) {
     console.log("connected: "+ socket.id);
     var msg = user.name + "さんが入室しました";

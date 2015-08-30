@@ -37,6 +37,11 @@
     function changeroom(){
       user.room = document.getElementById('rooms').value;
       socketio.emit("roomChange", user);
+      var dom = document.getElementById("msg");
+      for(var i = 0; i < dom.length; i++){
+        console.log(dom);
+        dom.parentNode.removeChild(dom[i]);
+      }
     }
 
 
@@ -44,7 +49,7 @@
     function start(user) {
       socketio.emit("connected", user);
       socketio.on("push_room", function(pushedrooms){
-        console.log(pushedrooms);
+        console.log("pushedroom: "+pushedrooms);
         rooms=pushedrooms;
         console.log("rooms:"+rooms);
         for(var p in rooms){
@@ -70,10 +75,11 @@
     function addMessage (msg) {
       console.log(msg);
       var domMeg = document.createElement('div');
+      domMeg.setAttribute('class', "message");
       domMeg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
       msgArea.appendChild(domMeg);
     }
-    
+      
     function createRoom(){
       var roomName = window.prompt("部屋の名前を付けてください。", "");
       socketio.emit("roomCreated", roomName);
