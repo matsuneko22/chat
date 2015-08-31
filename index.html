@@ -35,8 +35,12 @@
     }
 
     function changeroom(){
+      var data = {
+        LRoom : user.room,
+        user : user
+      }
       user.room = document.getElementById('rooms').value;
-      socketio.emit("roomChange", user);
+      socketio.emit("roomChange", data);
     }
 
 
