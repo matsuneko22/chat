@@ -24,14 +24,15 @@ io.sockets.on("connection", function (socket) {
     socket.broadcast.emit("publish", {value: msg});
   });
 
-  socket.on("roomChange", function(user){
-    socket.join(user.room);
+  socket.on("roomChange", function(pushData){
+    socket.leave(pushData.LRoom);
+    socket.join(pushData.user.room);
     console.log("emit comming!")
     var data = {
-      user: user,
-      value : user.name + "さんが入室しました"
+      user: pushData.user,
+      value : pushData.user.name + "さんが"+pushData.user.room+"に入室しました"
     }
-    socket.broadcast.to(user.room).emit('publish', data);
+    socket.broadcast.to(data.user.room).emit('publish', data);
   })
 
   socket.on("publish", function (data) {

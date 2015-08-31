@@ -35,13 +35,12 @@
     }
 
     function changeroom(){
-      user.room = document.getElementById('rooms').value;
-      socketio.emit("roomChange", user);
-      var dom = document.getElementById("msg");
-      for(var i = 0; i < dom.length; i++){
-        console.log(dom);
-        dom.parentNode.removeChild(dom[i]);
+      var data = {
+        LRoom : user.room,
+        user : user
       }
+      user.room = document.getElementById('rooms').value;
+      socketio.emit("roomChange", data);
     }
 
 
