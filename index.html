@@ -2,9 +2,14 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
   <title>chat unstable</title>
 </head>
 <body>
+  <header>
+    <button id="logout">logout</button>
+  </header>
+
   <select id="rooms" onchange="changeroom();">
     <!--<option value="default">default room</option>-->
   </select>
@@ -13,6 +18,7 @@
   <input type="text" id="msg_input" style="width:200px;" onchange="publishMessage();" />
   <button onclick="publishMessage();">send</button>
   <div id="msg"></div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     var location_obj = window.location;
@@ -61,13 +67,17 @@
 
     function publishMessage() {
       var textInput = document.getElementById('msg_input');
-      var msg = "[" + user.name + "] " + textInput.value;
-      console.log(msg);
-      socketio.emit("publish", 
-        {
-          value: msg,
-          user: user
-          });
+      if(textInput.value === ""){
+
+      }else {
+        var msg = "[" + user.name + "] " + textInput.value;
+        console.log(msg);
+        socketio.emit("publish",
+                {
+                  value: msg,
+                  user: user
+                });
+      }
       textInput.value = '';
     }
 
@@ -85,11 +95,12 @@
     }
     
     function addRoom(name){
-      var select = document.getElementById('rooms');
-      var option = document.createElement('option');
-      option.setAttribute('value', name);
-      option.innerHTML = name;
-      select.appendChild(option);
+//      var select = document.getElementById('rooms');
+//      var option = document.createElement('option');
+//      option.setAttribute('value', name);
+//      option.innerHTML = name;
+//      select.appendChild(option);
+      $("select#rooms").append("<option>"+name+"</option>");
     }
 
 
